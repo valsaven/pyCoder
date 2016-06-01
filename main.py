@@ -1,17 +1,16 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox as msg
-from os import path
 import subprocess
+import tkinter as tk
+from os import path
+from tkinter import messagebox as msg
+from tkinter import ttk
 
 global newpath
 newpath = "{}\\".format(path.dirname(path.abspath(__file__)))
 
 
 class Application(tk.Tk):
-
     def __init__(self, parent):
         tk.Tk.__init__(self, parent)
         self.parent = parent
@@ -41,9 +40,11 @@ class Application(tk.Tk):
                                       textvariable=bitrate,
                                       width=15, height=20)
         self.comboBox3 = ttk.Combobox(self, values=fps_values,
-                                      textvariable=fps, width=15, height=20)
+                                      textvariable=fps,
+                                      width=15, height=20)
         self.comboBox4 = ttk.Combobox(self, values=gop_values,
-                                      textvariable=gop, width=15, height=20)
+                                      textvariable=gop,
+                                      width=15, height=20)
 
         self.checkBox1 = tk.Checkbutton(self, text='Pause', variable=pause)
 
@@ -65,16 +66,12 @@ class Application(tk.Tk):
         self.label3.grid(column=1, row=2, sticky='W')
         self.label4.grid(column=1, row=3, sticky='W')
 
-        def onClick():
+        def on_click():
             create_execute(resolution, bitrate, fps, gop)
 
         def create_execute(resolution, bitrate, fps, gop):
-            commands = []
-            commands.append('@set curpath=%~dp0')
-            commands.append('@cd /d %curpath%')
-            commands.append('@echo %curpath%')
-            commands.append('set \"cont=mp4\"')
-            commands.append('for %%i in (../in/*.*) do (')
+            commands = ['@set curpath=%~dp0', '@cd /d %curpath%', '@echo %curpath%', 'set \"cont=mp4\"',
+                        'for %%i in (../in/*.*) do (']
 
             # Read variables values
             bitrate = bitrate.get()
@@ -102,7 +99,10 @@ class Application(tk.Tk):
             else:
                 gop = " -g " + gop + ""
 
-            commands.append("ffmpeg -i \"../in/%%i\" -vcodec h264" + resolution + "" + fps + "" + gop + " -b " + bitrate + " -bt " + bitrate + " -acodec mp3 -ar 44100 -ab 128k \"../out/%%~ni.%cont%\")")
+            commands.append(
+                "ffmpeg -i \"../in/%%i\" -vcodec h264" + resolution + "" +
+                fps + "" + gop + " -b " + bitrate + " -bt " + bitrate +
+                " -acodec mp3 -ar 44100 -ab 128k \"../out/%%~ni.%cont%\")")
 
             if pause.get():
                 commands.append("pause")
@@ -118,7 +118,7 @@ class Application(tk.Tk):
 
         # "Create and execute" button
         self.button1 = tk.Button(self, text='Create and execute',
-                                 command=onClick)
+                                 command=on_click)
         self.button1.grid(column=1, row=4, pady=10, sticky='W')
 
 
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     w = 250  # Width of the window
     h = 180  # Height of the window
 
-    # Get the path to programm and set the icon
+    # Get the path to program and set the icon
     app.iconbitmap(newpath + 'th06r.ico')
 
     # Center screen
