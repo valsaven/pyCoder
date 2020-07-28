@@ -124,7 +124,7 @@ class Application(tk.Tk):
 
 if __name__ == '__main__':
     app = Application(None)
-    app.title("pyCoder v0.1")  # Title
+    app.title("pyCoder v1.0")  # Title
     app.resizable(False, False)  # Disable resize
     w = 250  # Width of the window
     h = 180  # Height of the window
